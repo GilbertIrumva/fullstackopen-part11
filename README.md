@@ -5,6 +5,9 @@ This repository is used for the CI/CD module of the Full Stack Open course.
 ## Deployed Application
 - **Live URL**: [https://fs-pokedex-g5vf.onrender.com/](https://fs-pokedex-g5vf.onrender.com/)
 
+## CI/CD Pipeline
+The project uses GitHub Actions for continuous integration (linting, build, Jest unit tests, Playwright end-to-end tests) and continuous deployment to Render.
+
 ## Commands
 
 Start by running `npm install` inside the project folder:
