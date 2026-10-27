@@ -7,6 +7,7 @@ This repository is used for the CI/CD module of the Full Stack Open course.
 
 ## CI/CD Pipeline
 The project uses GitHub Actions for continuous integration (linting, build, Jest unit tests, Playwright end-to-end tests) and continuous deployment to Render.
+Automatic deployments and semantic release tagging are skipped if the commit message contains `#skip`.
 
 ## Commands
 
