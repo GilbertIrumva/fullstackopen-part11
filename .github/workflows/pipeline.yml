@@ -5,9 +5,11 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+    branches: [main]
     types: [opened, synchronize]
+
+permissions:
+  contents: write
 
 jobs:
   simple_deployment_pipeline:
@@ -32,3 +34,15 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' }}
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
