@@ -9,13 +9,14 @@ module.exports = [
       'webpack.config.js',
       'eslint.config.js',
       '.eslintrc.js',
+      'playwright.config.js',
       'node_modules/**',
       'dist/**'
     ]
   },
   js.configs.recommended,
   {
-    files: ['app.js', 'jest.setup.js'],
+    files: ['app.js', 'jest.setup.js', 'e2e-tests/**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2018,
       sourceType: 'commonjs',
