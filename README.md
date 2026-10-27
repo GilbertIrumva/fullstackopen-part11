@@ -1,13 +1,17 @@
 # Full Stack open CI/CD
 
-This repository is used for the CI/CD module of the Full Stack Open course
+This repository is used for the CI/CD module of the Full Stack Open course.
+
+## Deployed Application
+- **Live URL**: [https://fs-pokedex-g5vf.onrender.com/](https://fs-pokedex-g5vf.onrender.com/)
 
 ## Commands
 
-Start by running `npm install` inside the project folder
+Start by running `npm install` inside the project folder:
 
-`npm start` to run the webpack dev server
-`npm test` to run tests
-`npm run eslint` to run eslint
-`npm run build` to make a production build
-`npm run start-prod` to run your production build
+- `npm start`: run the webpack dev server
+- `npm test`: run unit tests (Jest)
+- `npm run eslint`: run ESLint
+- `npm run build`: make a production build
+- `npm run start-prod`: run the production build with Node/Express
+- `npm run test:e2e`: run Playwright end-to-end tests
