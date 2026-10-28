@@ -19,3 +19,5 @@ Start by running `npm install` inside the project folder:
 - `npm run build`: make a production build
 - `npm run start-prod`: run the production build with Node/Express
 - `npm run test:e2e`: run Playwright end-to-end tests
+
+<!-- Branch protection test -->
