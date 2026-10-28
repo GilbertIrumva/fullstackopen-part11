@@ -31,18 +31,6 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npm run test:e2e
-      - name: Trigger deployment
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        run: curl ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-      - name: Discord Notification (Deployment Success)
-        uses: sarisia/actions-status-discord@v1
-        if: ${{ success() && github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          nodetail: true
-          title: "A new version of Pokedex deployed"
-          description: "to https://fs-pokedex-g5vf.onrender.com/ by ${{ github.actor }}"
-          color: 0x00FF00
       - name: Discord Notification (Build Failure)
         uses: sarisia/actions-status-discord@v1
         if: ${{ failure() }}
@@ -53,14 +41,36 @@ jobs:
           description: "commit [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }} broke the build."
           color: 0xFF0000
 
-  tag_release:
+  deploy:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - name: Trigger deployment
+        run: curl ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+  tag_release:
+    needs: [deploy]
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
       - uses: actions/checkout@v4
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: anothrNick/github-tag-action@1.75.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+  notify_success:
+    needs: [deploy]
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - name: Discord Notification (Deployment Success)
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          title: "A new version of Pokedex deployed"
+          description: "to https://fs-pokedex-g5vf.onrender.com/ by ${{ github.actor }}"
+          color: 0x00FF00
