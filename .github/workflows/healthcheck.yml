@@ -5,6 +5,11 @@ on:
     # Runs every 24 hours (at midnight UTC) to save GitHub Action minutes
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      check_url:
+        description: 'URL to ping'
+        required: false
+        default: 'https://fs-pokedex-g5vf.onrender.com/health'
 
 jobs:
   periodic_health_check:
@@ -13,6 +18,6 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v4
         with:
-          url: https://fs-pokedex-g5vf.onrender.com/health
+          url: ${{ inputs.check_url || 'https://fs-pokedex-g5vf.onrender.com/health' }}
           max-attempts: 3
           retry-delay: 5s
