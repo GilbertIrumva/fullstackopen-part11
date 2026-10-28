@@ -13,6 +13,6 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v4
         with:
-          url: https://fs-pokedex-g5vf.onrender.com/simulate-failure
+          url: https://fs-pokedex-g5vf.onrender.com/health
           max-attempts: 3
           retry-delay: 5s
